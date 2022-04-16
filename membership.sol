@@ -26,7 +26,7 @@ contract Membership is KIP17Full {
         returns (uint256)
     {
         _tokenIds.increment();
-        owners[msg.sender].push(_target);
+        owners[msg.sender].push(_target); // TODO: 중복체크 기능필요. 전송 기능 만들 때 유저 지갑 간 재연결 필요.
         uint256 newItemId = _tokenIds.current();
         _mint(_target, newItemId);
         _setTokenURI(newItemId, tokenURI);
