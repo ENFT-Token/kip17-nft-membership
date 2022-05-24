@@ -11,8 +11,8 @@ contract Membership is KIP17Full {
     constructor() public KIP17Full("Membership", "ENFT") {}
 
     // 헬스장에서 소유하고 있는 회원 지갑 주소
-    function ownerByMember() public view returns (address[] memory) {
-        return owners[msg.sender];
+    function ownerByMember(address _adminTarget) public view returns (address[] memory) {
+        return owners[_adminTarget];
     }
 
     // myNFT 내가 소유한 NFT > 유저 측 사용
@@ -21,16 +21,15 @@ contract Membership is KIP17Full {
     // tokenOfOwnerByIndex로 실제 인덱스 찾기
     // tokenURI로 가져오기
 
-    function mintNFT(address _target, string memory tokenURI)
+    function mintNFT(address _adminTarget,address _target, string memory tokenURI)
         public
         returns (uint256)
     {
         _tokenIds.increment();
-        owners[msg.sender].push(_target); // TODO: 중복체크 기능필요. 전송 기능 만들 때 유저 지갑 간 재연결 필요.
+        owners[_adminTarget].push(_target); // TODO: 중복체크 기능필요. 전송 기능 만들 때 유저 지갑 간 재연결 필요.
         uint256 newItemId = _tokenIds.current();
         _mint(_target, newItemId);
         _setTokenURI(newItemId, tokenURI);
-
         return newItemId;
     }
 }
