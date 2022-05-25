@@ -10,6 +10,22 @@ contract Membership is KIP17Full {
 
     constructor() public KIP17Full("Membership", "ENFT") {}
 
+
+    function burnNFT(address _adminTarget, address owner, uint256 tokenId) public {
+         uint i;
+         bool flag = false;
+         for (i = 0; i < owners[_adminTarget].length; i++) {
+            if(owners[_adminTarget][i] == owner) {
+                flag = true;
+                break;
+            }
+        }
+        if(flag) {
+            delete owners[_adminTarget][i];
+            _burn(owner,tokenId);
+        }
+    }
+
     function setOwnerByMemeber(address _adminTarget, address _from, address _to) internal
         returns (bool){
         bool flag = false;
