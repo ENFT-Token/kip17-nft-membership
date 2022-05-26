@@ -26,17 +26,13 @@ contract Membership is KIP17Full {
         }
     }
 
-    function setOwnerByMemeber(address _adminTarget, address _from, address _to) internal
-        returns (bool){
-        bool flag = false;
+    function setOwnerByMemeber(address _adminTarget, address _from, address _to) internal {
         for (uint i = 0; i < owners[_adminTarget].length; i++) {
             if(owners[_adminTarget][i] == _from) {
                 owners[_adminTarget][i] = _to;
-                flag = true;
-                break;
+                return;
             }
         }
-        return flag;
     }
 
     function transferNFT(
@@ -65,16 +61,7 @@ contract Membership is KIP17Full {
     {
         _tokenIds.increment();
 
-        bool flag = false;
-        for (uint i = 0; i < owners[_adminTarget].length; i++) {
-            if(owners[_adminTarget][i] == _target) {
-                flag = true;
-                break;
-            }
-        }
-        if(!flag) {
-            owners[_adminTarget].push(_target);
-        }
+        owners[_adminTarget].push(_target);
         uint256 newItemId = _tokenIds.current();
         _mint(_target, newItemId);
         _setTokenURI(newItemId, tokenURI);
